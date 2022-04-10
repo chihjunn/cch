@@ -1,0 +1,139 @@
+<html>
+<head>
+<title>MainActivity.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #808080;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.cch</span>
+
+<span class="s1">import androidx.appcompat.app.AppCompatActivity</span>
+<span class="s1">import android.os.Bundle</span>
+<span class="s1">import android.view.GestureDetector</span>
+<span class="s1">import android.view.MotionEvent</span>
+<span class="s1">import android.view.View</span>
+<span class="s1">import kotlinx.android.synthetic.main.activity_main.*</span>
+
+<span class="s0">class </span><span class="s1">MainActivity : AppCompatActivity()</span><span class="s0">,</span>
+    <span class="s1">GestureDetector.OnGestureListener</span><span class="s0">, </span><span class="s1">GestureDetector.OnDoubleTapListener</span><span class="s0">,</span>
+    <span class="s1">View.OnTouchListener{</span>
+
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">gDetector: GestureDetector</span>
+    <span class="s0">var </span><span class="s1">PictureNo:Int = </span><span class="s2">0  </span><span class="s3">//目前顯示第幾張圖</span>
+    <span class="s0">var </span><span class="s1">TotalPictures:Int = </span><span class="s2">5 </span><span class="s3">//總共幾張圖片(假設僅顯示pu0-pu3)</span>
+
+    <span class="s0">fun </span><span class="s1">ShowPicture() {</span>
+        <span class="s3">/* 
+        when (PictureNo) { 
+            0 -&gt; img.setImageResource(R.drawable.pu0) 
+            1 -&gt; img.setImageResource(R.drawable.pu1) 
+            2 -&gt; img.setImageResource(R.drawable.pu2) 
+            3 -&gt; img.setImageResource(R.drawable.pu3) 
+            4 -&gt; img.setImageResource(R.drawable.pu4) 
+        } 
+        */</span>
+        <span class="s1">txv.text = PictureNo.toString()</span>
+        <span class="s0">var </span><span class="s1">res:Int = getResources().getIdentifier(</span><span class="s4">&quot;pu&quot; </span><span class="s1">+ PictureNo.toString()</span><span class="s0">,</span>
+            <span class="s4">&quot;drawable&quot;</span><span class="s0">, </span><span class="s1">getPackageName())</span>
+        <span class="s1">img.setImageResource(res)</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onCreate(savedInstanceState: Bundle?) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span>
+        <span class="s1">gDetector = GestureDetector(</span><span class="s0">this, this</span><span class="s1">)</span>
+        <span class="s1">img.setOnTouchListener(</span><span class="s0">this</span><span class="s1">)</span>
+        <span class="s0">var </span><span class="s1">res:Int = -</span><span class="s2">1</span>
+        <span class="s0">var </span><span class="s1">countDrawables:Int = -</span><span class="s2">1</span>
+        <span class="s0">while </span><span class="s1">(res != </span><span class="s2">0</span><span class="s1">) {</span>
+            <span class="s1">countDrawables++</span><span class="s0">;</span>
+            <span class="s1">res = getResources().getIdentifier(</span><span class="s4">&quot;pu&quot; </span><span class="s1">+ countDrawables.toString()</span><span class="s0">,</span>
+                <span class="s4">&quot;drawable&quot;</span><span class="s0">, </span><span class="s1">getPackageName())</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">TotalPictures = countDrawables</span>
+    <span class="s1">}</span>
+
+    <span class="s3">/* 
+    override fun onTouchEvent(event: MotionEvent?): Boolean { 
+        gDetector.onTouchEvent(event) 
+        return true 
+    } 
+     */</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onDown(p0: MotionEvent?): Boolean {</span>
+        <span class="s3">//txv.text = &quot;按下&quot;</span>
+        <span class="s0">return true</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onShowPress(p0: MotionEvent?) {</span>
+        <span class="s3">//txv.text = &quot;按下後無後續動作&quot;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onSingleTapUp(p0: MotionEvent?): Boolean {</span>
+        <span class="s3">//txv.text = &quot;短按&quot;</span>
+        <span class="s1">PictureNo = </span><span class="s2">0</span>
+        <span class="s1">ShowPicture()</span>
+        <span class="s0">return true</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onScroll(e1: MotionEvent?</span><span class="s0">, </span><span class="s1">e2: MotionEvent?</span><span class="s0">, </span><span class="s1">distanceX: Float</span><span class="s0">, </span><span class="s1">distanceY: Float): Boolean {</span>
+        <span class="s3">/* 
+        txv.text = &quot;拖曳\nx1y1: &quot; +  e1?.getX().toString() + &quot;, &quot; + e1?.getY().toString() + 
+                &quot;\nx2y2: &quot; + e2?.getX().toString() + &quot;, &quot; + e2?.getY().toString() 
+         */</span>
+        <span class="s0">return true</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onLongPress(p0: MotionEvent?) {</span>
+        <span class="s3">//txv.text = &quot;長按&quot;</span>
+        <span class="s1">PictureNo = TotalPictures - </span><span class="s2">1</span>
+        <span class="s1">ShowPicture()</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onFling(e1: MotionEvent?</span><span class="s0">, </span><span class="s1">e2: MotionEvent?</span><span class="s0">, </span><span class="s1">velocityX: Float</span><span class="s0">, </span><span class="s1">velocityY: Float): Boolean {</span>
+        <span class="s0">if </span><span class="s1">(e1!!.getX() &lt; e2!!.getX()){  </span><span class="s3">//向右快滑</span>
+            <span class="s1">PictureNo++</span>
+            <span class="s0">if </span><span class="s1">(PictureNo == TotalPictures) {PictureNo = </span><span class="s2">0</span><span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">else</span><span class="s1">{     </span><span class="s3">//向左快滑</span>
+            <span class="s1">PictureNo--</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(PictureNo &lt; </span><span class="s2">0</span><span class="s1">) {PictureNo = TotalPictures - </span><span class="s2">1 </span><span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s1">ShowPicture()</span>
+        <span class="s0">return true</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onSingleTapConfirmed(p0: MotionEvent?): Boolean {</span>
+        <span class="s0">return true</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onDoubleTap(p0: MotionEvent?): Boolean {</span>
+        <span class="s0">return true</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onDoubleTapEvent(p0: MotionEvent?): Boolean {</span>
+        <span class="s3">//txv.text = &quot;連續點兩下&quot;</span>
+        <span class="s0">return true</span>
+    <span class="s1">}</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onTouch(p0: View?</span><span class="s0">, </span><span class="s1">event: MotionEvent?): Boolean {</span>
+        <span class="s1">gDetector.onTouchEvent(event)</span>
+        <span class="s0">return true</span>
+
+    <span class="s1">}</span>
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
